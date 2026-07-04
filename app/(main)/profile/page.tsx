@@ -18,13 +18,13 @@ export default function ProfilePage() {
   const router = useRouter();
   const { ready, profile, progress } = useAppState();
 
-  if (!ready) return <p className="py-20 text-center text-neutral-400">加载中…</p>;
+  if (!ready) return <p className="py-20 text-center text-text-muted">加载中…</p>;
 
   if (!profile) {
     return (
       <main className="py-20 text-center">
-        <p className="text-neutral-500">还没有设置个人信息。</p>
-        <Link href="/onboarding" className="mt-4 inline-block rounded-xl bg-red-600 px-6 py-3 font-semibold text-white">
+        <p className="text-text-secondary">还没有设置个人信息。</p>
+        <Link href="/onboarding" className="btn-primary mt-4 px-6 py-3 text-[15px]">
           开始设置
         </Link>
       </main>
@@ -40,7 +40,7 @@ export default function ProfilePage() {
     <main>
       <PageHeader title="我的" />
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+      <section className="card-soft p-4">
         <Row label="身份" value={IDENTITY_LABELS[profile.identity]} />
         <Row label="目的地" value="温哥华 · BC 省 · 加拿大" />
         <Row label="登陆日期" value={profile.landingDate} />
@@ -57,16 +57,10 @@ export default function ProfilePage() {
       </section>
 
       <div className="mt-6 space-y-3">
-        <Link
-          href="/onboarding"
-          className="block rounded-xl border border-neutral-300 py-3.5 text-center text-[15px] font-medium dark:border-neutral-700"
-        >
+        <Link href="/onboarding" className="btn-secondary block w-full py-3.5 text-center text-[15px]">
           修改我的信息（重新生成清单）
         </Link>
-        <Link
-          href="/help"
-          className="block rounded-xl border border-neutral-300 py-3.5 text-center text-[15px] font-medium dark:border-neutral-700"
-        >
+        <Link href="/help" className="btn-secondary block w-full py-3.5 text-center text-[15px]">
           联系人工协助
         </Link>
         <button
@@ -76,15 +70,16 @@ export default function ProfilePage() {
               router.push("/");
             }
           }}
-          className="block w-full rounded-xl border border-red-200 py-3.5 text-center text-[15px] font-medium text-red-600 dark:border-red-900"
+          className="block w-full rounded-2xl bg-brand-soft py-3.5 text-center text-[15px] font-semibold text-brand"
         >
           清除所有数据
         </button>
       </div>
 
-      <p className="mt-8 text-center text-[11px] leading-relaxed text-neutral-400">
+      <p className="mt-8 text-center text-[11px] leading-relaxed text-text-muted">
         本产品提供一般生活信息和任务整理，不替代律师、医生、会计师、持牌移民顾问或其他专业人士的意见。
-        <br />数据保存在你的设备本地，我们不收集你的个人信息。
+        <br />
+        数据保存在你的设备本地，我们不收集你的个人信息。
       </p>
     </main>
   );
@@ -94,20 +89,20 @@ function Row({ label, value, last }: { label: string; value: string; last?: bool
   return (
     <div
       className={`flex items-center justify-between py-2.5 ${
-        last ? "" : "border-b border-neutral-100 dark:border-neutral-800"
+        last ? "" : "border-b border-[#eef1f6]"
       }`}
     >
-      <span className="text-sm text-neutral-500">{label}</span>
-      <span className="text-sm font-medium">{value}</span>
+      <span className="text-sm text-text-secondary">{label}</span>
+      <span className="text-sm font-medium text-text-primary">{value}</span>
     </div>
   );
 }
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white p-3 text-center dark:border-neutral-800 dark:bg-neutral-900">
-      <p className="text-xl font-bold">{value}</p>
-      <p className="mt-0.5 text-xs text-neutral-500">{label}</p>
+    <div className="card-soft-sm p-3 text-center">
+      <p className="text-xl font-bold text-brand">{value}</p>
+      <p className="mt-0.5 text-xs text-text-secondary">{label}</p>
     </div>
   );
 }

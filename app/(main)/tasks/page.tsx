@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import type { StageId } from "@/types";
 import { STAGES } from "@/data/stages";
 import { useAppState } from "@/lib/store";
@@ -8,7 +10,6 @@ import { applicableTasks, sortTasks, taskStatus } from "@/lib/taskEngine";
 import { computeStage } from "@/lib/stage";
 import TaskCard from "@/components/TaskCard";
 import PageHeader from "@/components/PageHeader";
-import Link from "next/link";
 
 type Filter = "all" | "must" | "recommended" | "high_risk" | "serviceable" | "done" | "todo";
 
@@ -32,32 +33,51 @@ export default function TasksPage() {
     [profile]
   );
 
-  const tasks = useMemo(() => {
+  const groupedTasks = useMemo(() => {
     if (!profile) return [];
+
     let list = applicableTasks(profile);
     if (stageFilter) list = list.filter((t) => t.stageId === stageFilter);
     list = list.filter((t) => {
       const st = taskStatus(progress, t.id);
       switch (filter) {
-        case "must": return t.priority === "P0";
-        case "recommended": return t.priority === "P1";
-        case "high_risk": return !!t.highRisk;
-        case "serviceable": return !!t.serviceable;
-        case "done": return st === "completed";
-        case "todo": return st === "not_started";
-        default: return true;
+        case "must":
+          return t.priority === "P0";
+        case "recommended":
+          return t.priority === "P1";
+        case "high_risk":
+          return !!t.highRisk;
+        case "serviceable":
+          return !!t.serviceable;
+        case "done":
+          return st === "completed";
+        case "todo":
+          return st === "not_started";
+        default:
+          return true;
       }
     });
-    return sortTasks(list, currentStage);
+
+    return STAGES.filter((s) => !stageFilter || s.id === stageFilter)
+      .map((stage) => ({
+        stage,
+        tasks: sortTasks(
+          list.filter((t) => t.stageId === stage.id),
+          currentStage
+        ),
+      }))
+      .filter((g) => g.tasks.length > 0);
   }, [profile, progress, stageFilter, filter, currentStage]);
 
-  if (!ready) return <p className="py-20 text-center text-neutral-400">加载中…</p>;
+  const totalCount = groupedTasks.reduce((n, g) => n + g.tasks.length, 0);
+
+  if (!ready) return <p className="py-20 text-center text-text-muted">加载中…</p>;
 
   if (!profile) {
     return (
       <main className="py-20 text-center">
-        <p className="text-neutral-500">先完成几个小问题，生成你的专属任务清单。</p>
-        <Link href="/onboarding" className="mt-4 inline-block rounded-xl bg-red-600 px-6 py-3 font-semibold text-white">
+        <p className="text-text-secondary">先完成几个小问题，生成你的专属任务清单。</p>
+        <Link href="/onboarding" className="btn-primary mt-4 px-6 py-3 text-[15px]">
           开始
         </Link>
       </main>
@@ -80,15 +100,13 @@ export default function TasksPage() {
         ))}
       </div>
 
-      <div className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1">
+      <div className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1">
         {FILTERS.map((f) => (
           <button
             key={f.id}
             onClick={() => setFilter(f.id)}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-[13px] ${
-              filter === f.id
-                ? "bg-neutral-900 font-medium text-white dark:bg-neutral-100 dark:text-neutral-900"
-                : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
+            className={`shrink-0 px-4 py-2 text-[13px] transition ${
+              filter === f.id ? "pill-active" : "pill-inactive"
             }`}
           >
             {f.label}
@@ -96,20 +114,33 @@ export default function TasksPage() {
         ))}
       </div>
 
-      {tasks.length === 0 ? (
-        <p className="py-16 text-center text-sm text-neutral-400">没有符合条件的任务</p>
+      {totalCount === 0 ? (
+        <p className="py-16 text-center text-sm text-text-muted">没有符合条件的任务</p>
       ) : (
-        <div className="space-y-2.5">
-          {tasks.map((t) => (
-            <TaskCard
-              key={t.id}
-              task={t}
-              status={taskStatus(progress, t.id)}
-              showStage={stageFilter === null}
-              onComplete={(id) =>
-                setTaskStatus(id, taskStatus(progress, id) === "completed" ? "not_started" : "completed")
-              }
-            />
+        <div className="space-y-6">
+          {groupedTasks.map(({ stage, tasks }) => (
+            <section key={stage.id}>
+              <SectionTitle
+                title={stage.nameZh}
+                count={tasks.length}
+                isCurrent={stage.id === currentStage}
+              />
+              <div className="space-y-3">
+                {tasks.map((t) => (
+                  <TaskCard
+                    key={t.id}
+                    task={t}
+                    status={taskStatus(progress, t.id)}
+                    onComplete={(id) =>
+                      setTaskStatus(
+                        id,
+                        taskStatus(progress, id) === "completed" ? "not_started" : "completed"
+                      )
+                    }
+                  />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       )}
@@ -117,14 +148,31 @@ export default function TasksPage() {
   );
 }
 
+function SectionTitle({
+  title,
+  count,
+  isCurrent,
+}: {
+  title: string;
+  count: number;
+  isCurrent: boolean;
+}) {
+  return (
+    <h2 className="mb-3 flex items-center gap-2 text-[15px] font-bold text-text-primary">
+      <CalendarDays className="h-[18px] w-[18px] text-brand" strokeWidth={2} />
+      {title}
+      {isCurrent && <span className="text-[13px] font-semibold text-brand">（当前）</span>}
+      <span className="text-[13px] font-medium text-text-muted">（{count}）</span>
+    </h2>
+  );
+}
+
 function StagePill({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
   return (
     <button
       onClick={onClick}
-      className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[13px] ${
-        active
-          ? "border-red-500 bg-red-50 font-semibold text-red-700 dark:bg-red-950 dark:text-red-300"
-          : "border-neutral-200 bg-white text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+      className={`shrink-0 px-4 py-2 text-[13px] transition ${
+        active ? "pill-active" : "pill-inactive"
       }`}
     >
       {label}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { use } from "react";
 import { notFound } from "next/navigation";
 import { TASK_MAP } from "@/data/tasks";
@@ -29,8 +30,12 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
 
   return (
     <main className="pb-24">
-      <Link href="/tasks" className="mb-3 inline-block text-sm text-neutral-500">
-        ← 返回任务列表
+      <Link
+        href="/tasks"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 rounded-xl py-2 pr-3 pl-1 text-[15px] font-semibold text-text-secondary active:opacity-70"
+      >
+        <ChevronLeft className="h-6 w-6 shrink-0" strokeWidth={2.25} />
+        返回任务列表
       </Link>
 
       <div className="mb-1 flex flex-wrap items-center gap-1.5">
@@ -38,10 +43,10 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
         <StageBadge stageId={task.stageId} />
         {task.highRisk && <HighRiskBadge />}
       </div>
-      <h1 className="text-2xl font-bold leading-snug">{task.titleZh}</h1>
-      <p className="mt-0.5 text-sm text-neutral-400">{task.titleEn}</p>
+      <h1 className="text-2xl font-bold leading-snug text-text-primary">{task.titleZh}</h1>
+      <p className="mt-0.5 text-sm text-text-muted">{task.titleEn}</p>
 
-      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-neutral-500 dark:text-neutral-400">
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-text-secondary">
         <span>⏱ 预计 {task.estimatedTime}</span>
         <span>👤 适用：{task.identities.map((i) => IDENTITY_LABELS[i]).join("、")}</span>
       </div>
@@ -55,7 +60,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
           <ul className="space-y-1.5">
             {task.requiredDocs.map((d, i) => (
               <li key={i} className="flex gap-2">
-                <span className="text-neutral-400">📄</span>
+                <span className="text-text-muted">📄</span>
                 <span>{d}</span>
               </li>
             ))}
@@ -67,7 +72,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
         <ol className="space-y-2.5">
           {task.steps.map((s, i) => (
             <li key={i} className="flex gap-3">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 text-[13px] font-bold text-red-600 dark:bg-red-950 dark:text-red-300">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-[13px] font-bold text-brand">
                 {i + 1}
               </span>
               <span className="leading-relaxed">{s}</span>
@@ -77,7 +82,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       </Section>
 
       <Section title="完成标准">
-        <div className="rounded-xl bg-green-50 p-3.5 text-green-800 dark:bg-green-950/40 dark:text-green-300">
+        <div className="card-soft-sm bg-success-soft/50 p-4 text-success">
           ✅ {task.completionStandard}
         </div>
       </Section>
@@ -96,16 +101,15 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       )}
 
       {task.englishScript && (
-        <Section title="英文脚本">
-          <blockquote className="rounded-xl border-l-4 border-blue-400 bg-blue-50 p-3.5 text-[15px] italic leading-relaxed text-blue-900 dark:bg-blue-950/40 dark:text-blue-200">
+        <Section title="英文对照">
+          <blockquote className="card-soft-sm border-l-4 border-brand/30 p-4 text-[15px] italic leading-relaxed text-text-primary">
             “{task.englishScript}”
           </blockquote>
           {relatedScripts.length > 0 && (
             <div className="mt-2 space-y-1">
               {relatedScripts.map((s) => (
-                <Link key={s.id} href={`/scripts/${s.id}`}
-                  className="block text-sm font-medium text-blue-600 dark:text-blue-400">
-                  💬 更多脚本：{s.titleZh} →
+                <Link key={s.id} href={`/scripts/${s.id}`} className="link-brand block text-sm">
+                  💬 更多对照：{s.titleZh} →
                 </Link>
               ))}
             </div>
@@ -118,8 +122,12 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
           <ul className="space-y-1.5">
             {task.officialSources.map((s) => (
               <li key={s.url}>
-                <a href={s.url} target="_blank" rel="noopener noreferrer"
-                  className="text-sm font-medium text-blue-600 underline dark:text-blue-400">
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-brand text-sm underline"
+                >
                   🔗 {s.name}
                 </a>
               </li>
@@ -130,13 +138,13 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
 
       {task.serviceable && (
         <Section title="需要帮忙？">
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950/30">
-            <p className="text-sm leading-relaxed">
+          <div className="card-soft p-4">
+            <p className="text-sm leading-relaxed text-text-secondary">
               材料不确定、英文沟通困难、看不懂官方页面？可以提交问题，有人用中文帮你。
             </p>
             <Link
               href={`/help?category=${(task.serviceCategory ?? "other") as LeadCategory}&task=${task.id}`}
-              className="mt-3 inline-block rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white active:bg-amber-600"
+              className="btn-primary mt-3 px-4 py-2.5 text-sm"
             >
               需要中文协助
             </Link>
@@ -144,18 +152,20 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
         </Section>
       )}
 
-      <div className="fixed inset-x-0 bottom-14 z-30 border-t border-neutral-200 bg-white/95 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/95">
+      <div className="fixed inset-x-0 bottom-14 z-30 bg-white px-4 py-3 shadow-[var(--shadow-nav)] pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         <div className="mx-auto flex max-w-lg gap-3">
           <button
             onClick={() => setTaskStatus(task.id, status === "skipped" ? "not_started" : "skipped")}
-            className="rounded-xl border border-neutral-300 px-4 py-3 text-sm font-medium text-neutral-600 dark:border-neutral-700 dark:text-neutral-300"
+            className="btn-secondary px-4 py-3 text-sm text-text-secondary"
           >
             {status === "skipped" ? "取消跳过" : "暂时跳过"}
           </button>
           <button
             onClick={() => setTaskStatus(task.id, completed ? "not_started" : "completed")}
-            className={`flex-1 rounded-xl py-3 text-[15px] font-semibold text-white ${
-              completed ? "bg-green-600 active:bg-green-700" : "bg-red-600 active:bg-red-700"
+            className={`flex-1 rounded-2xl py-3 text-[15px] font-semibold text-white shadow-[var(--shadow-card-sm)] ${
+              completed
+                ? "bg-[var(--color-success)] active:opacity-90"
+                : "btn-primary"
             }`}
           >
             {completed ? "✓ 已完成（点击撤销）" : "标记完成"}
@@ -169,8 +179,8 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-6">
-      <h2 className="mb-2 text-[15px] font-bold">{title}</h2>
-      <div className="text-[15px] text-neutral-700 dark:text-neutral-300">{children}</div>
+      <h2 className="mb-2 text-[15px] font-bold text-text-primary">{title}</h2>
+      <div className="text-[15px] text-text-secondary">{children}</div>
     </section>
   );
 }

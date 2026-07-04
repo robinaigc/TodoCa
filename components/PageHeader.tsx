@@ -6,10 +6,10 @@ export default function PageHeader({
   subtitle?: string;
 }) {
   return (
-    <header className="mb-4">
-      <h1 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">{title}</h1>
+    <header className="mb-5">
+      <h1 className="text-2xl font-bold tracking-tight text-text-primary">{title}</h1>
       {subtitle && (
-        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{subtitle}</p>
+        <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">{subtitle}</p>
       )}
     </header>
   );

@@ -2,9 +2,9 @@ import type { Priority, StageId } from "@/types";
 import { stageName } from "@/lib/stage";
 
 const PRIORITY_STYLES: Record<Priority, string> = {
-  P0: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
-  P1: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
-  P2: "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300",
+  P0: "bg-brand-soft text-brand",
+  P1: "bg-[#f0f4f8] text-[#475569]",
+  P2: "bg-[#f0f4f8] text-text-secondary",
 };
 
 const PRIORITY_LABELS: Record<Priority, string> = {
@@ -16,7 +16,7 @@ const PRIORITY_LABELS: Record<Priority, string> = {
 export function PriorityBadge({ priority }: { priority: Priority }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${PRIORITY_STYLES[priority]}`}
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${PRIORITY_STYLES[priority]}`}
     >
       {priority} · {PRIORITY_LABELS[priority]}
     </span>
@@ -25,7 +25,7 @@ export function PriorityBadge({ priority }: { priority: Priority }) {
 
 export function StageBadge({ stageId }: { stageId: StageId }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+    <span className="inline-flex items-center rounded-full bg-[#f0f4f8] px-2.5 py-0.5 text-[11px] font-semibold text-[#475569]">
       {stageName(stageId)}
     </span>
   );
@@ -33,8 +33,8 @@ export function StageBadge({ stageId }: { stageId: StageId }) {
 
 export function HighRiskBadge() {
   return (
-    <span className="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-medium text-orange-700 dark:bg-orange-950 dark:text-orange-300">
-      ⚠️ 高风险
+    <span className="inline-flex items-center rounded-full bg-[#fff7ed] px-2.5 py-0.5 text-[11px] font-semibold text-[#c2410c]">
+      高风险
     </span>
   );
 }

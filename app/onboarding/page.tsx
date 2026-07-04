@@ -66,12 +66,12 @@ export default function OnboardingPage() {
       body: (
         <div className="space-y-5">
           <div>
-            <p className="mb-2 text-sm text-neutral-500">目的地暂时只开放：🇨🇦 温哥华（BC 省）</p>
+            <p className="mb-2 text-sm text-text-secondary">目的地暂时只开放：🇨🇦 温哥华（BC 省）</p>
             <input
               type="date"
               value={landingDate}
               onChange={(e) => setLandingDate(e.target.value)}
-              className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-base dark:border-neutral-700 dark:bg-neutral-900"
+              className="input-soft"
             />
           </div>
           <div>
@@ -111,7 +111,7 @@ export default function OnboardingPage() {
               />
             ))}
           </div>
-          <p className="mt-3 text-sm text-neutral-400">
+          <p className="mt-3 text-sm text-text-muted">
             已选 {topConcerns.length} 项，可继续多选或取消
           </p>
         </div>
@@ -139,34 +139,31 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-lg flex-col px-5 pb-8 pt-8">
+    <main className="surface-page mx-auto flex min-h-dvh max-w-lg flex-col px-5 pb-8 pt-8">
       <div className="mb-6 flex items-center gap-2">
         {steps.map((_, i) => (
           <div
             key={i}
             className={`h-1.5 flex-1 rounded-full ${
-              i <= step ? "bg-red-500" : "bg-neutral-200 dark:bg-neutral-800"
+              i <= step ? "bg-brand" : "bg-surface-muted"
             }`}
           />
         ))}
       </div>
 
-      <h1 className="text-2xl font-bold">{current.title}</h1>
+      <h1 className="text-2xl font-bold tracking-tight text-text-primary">{current.title}</h1>
       <div className="mt-6 flex-1">{current.body}</div>
 
       <div className="mt-8 flex gap-3">
         {step > 0 && (
-          <button
-            onClick={() => setStep(step - 1)}
-            className="rounded-xl border border-neutral-300 px-5 py-3.5 text-[15px] font-medium dark:border-neutral-700"
-          >
+          <button onClick={() => setStep(step - 1)} className="btn-secondary px-5 py-3.5 text-[15px]">
             上一步
           </button>
         )}
         <button
           disabled={!current.valid}
           onClick={() => (isLast ? finish() : setStep(step + 1))}
-          className="flex-1 rounded-xl bg-red-600 py-3.5 text-[15px] font-semibold text-white active:bg-red-700 disabled:opacity-40"
+          className="btn-primary flex-1 py-3.5 text-[15px]"
         >
           {isLast ? "生成我的登陆清单 🎉" : "下一步"}
         </button>
@@ -193,17 +190,13 @@ function ChoiceCard({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full rounded-xl border-2 p-4 text-left transition ${
-        active
-          ? "border-red-500 bg-red-50 dark:bg-red-950/40"
-          : "border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
-      }`}
+      className={`choice-card ${active ? "choice-card-active" : ""}`}
     >
-      <p className="flex items-center justify-between text-[15px] font-semibold">
+      <p className="flex items-center justify-between text-[15px] font-semibold text-text-primary">
         {label}
-        {checked && <span className="text-red-500">✓</span>}
+        {checked && <span className="text-brand">✓</span>}
       </p>
-      {desc && <p className="mt-0.5 text-sm text-neutral-500">{desc}</p>}
+      {desc && <p className="mt-0.5 text-sm text-text-secondary">{desc}</p>}
     </button>
   );
 }

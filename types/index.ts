@@ -108,6 +108,16 @@ export interface MapResource {
   lastVerified?: string;
 }
 
+/** 华人本地服务分类（阶段 B 起逐步开放商户） */
+export type ServiceCategory =
+  | "home_cleaning"
+  | "lawn_garden"
+  | "home_repair"
+  | "moving"
+  | "auto"
+  | "tutoring"
+  | "food";
+
 export type TopConcern =
   | "dont_know_start"
   | "housing"

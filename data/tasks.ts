@@ -329,7 +329,7 @@ export const TASKS: Task[] = [
       "第一周的每个场景（入境问答、银行开户、买卡）都要用英语。提前准备好句子，现场照着说，可以大幅减少沟通焦虑。",
     requiredDocs: [],
     steps: [
-      "浏览本 App 的英文脚本库，收藏第一周会用到的脚本",
+      "浏览本 App 的英文对照库，收藏第一周会用到的对照",
       "重点准备：入境问答、买电话卡、银行开户、问路",
       "学会万能句：Sorry, English is not my first language. Could you speak more slowly?",
       "把常用句子截图或存到备忘录",
@@ -1165,7 +1165,7 @@ export const TASKS: Task[] = [
       "书面沟通留证据，比电话更适合英语非母语者。有模板后，写邮件从 1 小时缩短到 5 分钟。",
     requiredDocs: [],
     steps: [
-      "浏览本 App 脚本库的邮件版模板",
+      "浏览本 App 对照库的邮件版模板",
       "收藏高频场景：报修、询问账单、预约、请求书面确认",
       "在邮箱里建立草稿或模板文件夹",
       "学会关键结尾句：Could you please confirm by email?",

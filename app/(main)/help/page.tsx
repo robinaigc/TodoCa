@@ -25,7 +25,7 @@ function HelpContent() {
         subtitle="看不懂英文邮件、账单、租房合同、医保说明，或不知道下一步该怎么办？提交问题，我们会根据问题类型联系你。"
       />
       <HelpForm defaultCategory={category} relatedTaskId={taskId} />
-      <p className="mt-6 text-center text-[11px] leading-relaxed text-neutral-400">
+      <p className="mt-6 text-center text-[11px] leading-relaxed text-text-muted">
         本服务提供一般生活信息协助，不构成法律、医疗、税务或移民专业意见。
       </p>
     </main>
@@ -34,7 +34,7 @@ function HelpContent() {
 
 export default function HelpPage() {
   return (
-    <Suspense fallback={<p className="py-20 text-center text-neutral-400">加载中…</p>}>
+    <Suspense fallback={<p className="py-20 text-center text-text-muted">加载中…</p>}>
       <HelpContent />
     </Suspense>
   );

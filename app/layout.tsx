@@ -1,5 +1,18 @@
 import type { Metadata, Viewport } from "next";
+import { Nunito_Sans, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  weight: ["500", "600", "700"],
+});
+
+const notoSansSC = Noto_Sans_SC({
+  subsets: ["latin"],
+  variable: "--font-noto",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -14,13 +27,17 @@ export const metadata: Metadata = {
     title: "我要移民啦",
     statusBarStyle: "default",
   },
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#dc2626",
+  themeColor: "#9e3434",
 };
 
 export default function RootLayout({
@@ -29,8 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+    <html
+      lang="zh-CN"
+      className={`${nunitoSans.variable} ${notoSansSC.variable} h-full antialiased`}
+    >
+      <body className="surface-page min-h-full">
         {children}
       </body>
     </html>

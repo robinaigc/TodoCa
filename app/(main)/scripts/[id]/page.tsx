@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import { SCRIPT_MAP } from "@/data/scripts";
@@ -15,12 +16,16 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <main className="pb-8">
-      <Link href="/scripts" className="mb-3 inline-block text-sm text-neutral-500">
-        ← 返回脚本库
+      <Link
+        href="/scripts"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 rounded-xl py-2 pr-3 pl-1 text-[15px] font-semibold text-text-secondary active:opacity-70"
+      >
+        <ChevronLeft className="h-6 w-6 shrink-0" strokeWidth={2.25} />
+        返回对照库
       </Link>
-      <h1 className="text-2xl font-bold">{script.titleZh}</h1>
-      <p className="mt-2 text-[15px] text-neutral-600 dark:text-neutral-300">
-        <span className="font-medium">场景：</span>
+      <h1 className="text-2xl font-bold text-text-primary">{script.titleZh}</h1>
+      <p className="mt-2 text-[15px] text-text-secondary">
+        <span className="font-medium text-text-primary">场景：</span>
         {script.scenarioZh}
       </p>
 
@@ -30,10 +35,10 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
 
       {script.possibleReplies && script.possibleReplies.length > 0 && (
         <section className="mt-6">
-          <h2 className="mb-2 text-[15px] font-bold">对方可能这样回答</h2>
+          <h2 className="mb-2 text-[15px] font-bold text-text-primary">对方可能这样回答</h2>
           <ul className="space-y-2">
             {script.possibleReplies.map((r, i) => (
-              <li key={i} className="rounded-xl bg-neutral-100 p-3 text-sm italic dark:bg-neutral-800">
+              <li key={i} className="card-soft-sm p-3 text-sm italic text-text-secondary">
                 “{r}”
               </li>
             ))}
@@ -43,10 +48,10 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
 
       {script.fallbackPhrases && script.fallbackPhrases.length > 0 && (
         <section className="mt-6">
-          <h2 className="mb-2 text-[15px] font-bold">听不懂时可以说</h2>
+          <h2 className="mb-2 text-[15px] font-bold text-text-primary">听不懂时可以说</h2>
           <ul className="space-y-2">
             {script.fallbackPhrases.map((p, i) => (
-              <li key={i} className="rounded-xl bg-amber-50 p-3 text-sm italic text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+              <li key={i} className="card-soft-sm bg-brand-soft/50 p-3 text-sm italic text-brand">
                 “{p}”
               </li>
             ))}
@@ -55,11 +60,8 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
       )}
 
       {relatedTask && (
-        <Link
-          href={`/tasks/${relatedTask.id}`}
-          className="mt-8 block rounded-xl border border-neutral-200 bg-white p-4 text-sm dark:border-neutral-800 dark:bg-neutral-900"
-        >
-          📋 相关任务：<span className="font-semibold">{relatedTask.titleZh}</span> →
+        <Link href={`/tasks/${relatedTask.id}`} className="list-row mt-8 text-sm">
+          📋 相关任务：<span className="font-semibold text-text-primary">{relatedTask.titleZh}</span> →
         </Link>
       )}
     </main>
@@ -82,12 +84,12 @@ function ScriptBlock({ label, text }: { label: string; text: string }) {
   return (
     <section className="mt-6">
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="text-[15px] font-bold">{label}</h2>
-        <button onClick={copy} className="text-sm font-medium text-blue-600 dark:text-blue-400">
+        <h2 className="text-[15px] font-bold text-text-primary">{label}</h2>
+        <button onClick={copy} className="link-brand text-sm">
           {copied ? "✓ 已复制" : "复制"}
         </button>
       </div>
-      <blockquote className="rounded-xl border-l-4 border-blue-400 bg-blue-50 p-4 text-[15px] leading-relaxed text-blue-900 dark:bg-blue-950/40 dark:text-blue-200">
+      <blockquote className="card-soft-sm border-l-4 border-brand/30 p-4 text-[15px] leading-relaxed text-text-primary">
         {text}
       </blockquote>
     </section>

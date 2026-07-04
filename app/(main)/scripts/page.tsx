@@ -19,7 +19,7 @@ export default function ScriptsPage() {
 
   return (
     <main>
-      <PageHeader title="英文脚本库" subtitle="办事不会说？照着念就行，还有邮件模板。" />
+      <PageHeader title="英文对照库" subtitle="办事不会说？照着念就行，还有邮件模板。" />
 
       <div className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1">
         <Pill active={category === null} onClick={() => setCategory(null)} label="全部" />
@@ -28,20 +28,16 @@ export default function ScriptsPage() {
         ))}
       </div>
 
-      <div className="space-y-2.5">
+      <div className="space-y-3">
         {list.map((s) => (
-          <Link
-            key={s.id}
-            href={`/scripts/${s.id}`}
-            className="block rounded-xl border border-neutral-200 bg-white p-3.5 dark:border-neutral-800 dark:bg-neutral-900"
-          >
+          <Link key={s.id} href={`/scripts/${s.id}`} className="list-row">
             <div className="flex items-center justify-between gap-2">
-              <p className="font-medium">{s.titleZh}</p>
-              <span className="shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+              <p className="font-semibold text-text-primary">{s.titleZh}</p>
+              <span className="shrink-0 rounded-full bg-brand-soft px-2.5 py-0.5 text-[11px] font-semibold text-brand">
                 {catName(s.category)}
               </span>
             </div>
-            <p className="mt-1 line-clamp-1 text-[13px] italic text-neutral-400">“{s.simpleEn}”</p>
+            <p className="mt-1 line-clamp-1 text-[13px] italic text-text-muted">“{s.simpleEn}”</p>
           </Link>
         ))}
       </div>
@@ -53,11 +49,7 @@ function Pill({ active, onClick, label }: { active: boolean; onClick: () => void
   return (
     <button
       onClick={onClick}
-      className={`shrink-0 rounded-full px-3.5 py-1.5 text-[13px] ${
-        active
-          ? "bg-neutral-900 font-medium text-white dark:bg-neutral-100 dark:text-neutral-900"
-          : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
-      }`}
+      className={`shrink-0 px-4 py-2 text-[13px] transition ${active ? "pill-active" : "pill-inactive"}`}
     >
       {label}
     </button>

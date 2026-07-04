@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import { RESOURCE_MAP, RESOURCE_CATEGORIES } from "@/data/resources";
@@ -29,68 +30,71 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <main className="pb-8">
-      <Link href="/map" className="mb-3 inline-block text-sm text-neutral-500">
-        ← 返回地图
+      <Link
+        href="/map"
+        className="mb-4 inline-flex min-h-11 items-center gap-1 rounded-xl py-2 pr-3 pl-1 text-[15px] font-semibold text-text-secondary active:opacity-70"
+      >
+        <ChevronLeft className="h-6 w-6 shrink-0" strokeWidth={2.25} />
+        返回导航
       </Link>
 
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+        <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-[11px] font-semibold text-brand">
           {catName}
         </span>
         {resource.isOfficial && (
-          <span className="rounded-full bg-green-50 px-2 py-0.5 text-[11px] text-green-700 dark:bg-green-950 dark:text-green-300">
+          <span className="rounded-full bg-success-soft px-2.5 py-0.5 text-[11px] font-semibold text-success">
             官方 / 公共机构
           </span>
         )}
       </div>
-      <h1 className="mt-1.5 text-2xl font-bold leading-snug">{resource.name}</h1>
-      <p className="mt-2 text-[15px] text-neutral-600 dark:text-neutral-300">{resource.descriptionZh}</p>
+      <h1 className="mt-1.5 text-2xl font-bold leading-snug text-text-primary">{resource.name}</h1>
+      <p className="mt-2 text-[15px] text-text-secondary">{resource.descriptionZh}</p>
 
       {resource.notesZh && (
-        <div className="mt-4 rounded-xl bg-amber-50 p-3.5 text-sm leading-relaxed text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
+        <div className="card-soft-sm mt-4 bg-brand-soft/40 p-4 text-sm leading-relaxed text-text-primary">
           💡 {resource.notesZh}
         </div>
       )}
 
-      <div className="mt-6 space-y-3 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="card-soft mt-6 space-y-3 p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs text-neutral-400">地址</p>
-            <p className="mt-0.5 text-sm">{resource.address}</p>
+            <p className="text-xs text-text-muted">地址</p>
+            <p className="mt-0.5 text-sm text-text-primary">{resource.address}</p>
           </div>
-          <button onClick={copyAddress} className="shrink-0 text-sm font-medium text-blue-600 dark:text-blue-400">
+          <button onClick={copyAddress} className="link-brand shrink-0 text-sm">
             {copied ? "✓ 已复制" : "复制"}
           </button>
         </div>
         {resource.phone && (
           <div>
-            <p className="text-xs text-neutral-400">电话</p>
-            <a href={`tel:${resource.phone}`} className="mt-0.5 block text-sm font-medium text-blue-600 dark:text-blue-400">
+            <p className="text-xs text-text-muted">电话</p>
+            <a href={`tel:${resource.phone}`} className="link-brand mt-0.5 block text-sm">
               {resource.phone}
             </a>
           </div>
         )}
         {resource.website && (
           <div>
-            <p className="text-xs text-neutral-400">官网</p>
-            <a href={resource.website} target="_blank" rel="noopener noreferrer"
-              className="mt-0.5 block break-all text-sm font-medium text-blue-600 underline dark:text-blue-400">
+            <p className="text-xs text-text-muted">官网</p>
+            <a
+              href={resource.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-brand mt-0.5 block break-all text-sm underline"
+            >
               {resource.website}
             </a>
           </div>
         )}
       </div>
 
-      <a
-        href={mapsUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-5 block rounded-xl bg-red-600 py-3.5 text-center text-[15px] font-semibold text-white active:bg-red-700"
-      >
+      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary mt-5 block py-3.5 text-center text-[15px]">
         🗺 在 Google Maps 中打开
       </a>
 
-      <p className="mt-4 text-center text-[11px] text-neutral-400">
+      <p className="mt-4 text-center text-[11px] text-text-muted">
         地址和电话可能变动，出发前建议先打电话或查官网确认。
       </p>
     </main>
