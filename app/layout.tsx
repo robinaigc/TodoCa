@@ -1,42 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Nunito_Sans, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 
-const nunitoSans = Nunito_Sans({
-  subsets: ["latin"],
-  variable: "--font-nunito",
-  weight: ["500", "600", "700"],
-});
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ["latin"],
-  variable: "--font-noto",
-  weight: ["400", "500", "600", "700"],
-});
-
 export const metadata: Metadata = {
+  applicationName: "TodoCa / 我要移民啦",
   title: {
-    default: "我要移民啦 · 加拿大登陆清单",
-    template: "%s · 我要移民啦",
+    default: "TodoCa · 我要移民啦 · 加拿大登陆清单",
+    template: "%s · TodoCa",
   },
   description:
-    "加拿大登陆前后 6 个月中文任务清单。留学生、工签、新 PR 登陆温哥华，每一步该做什么，都帮你列好。",
+    "面向留学生、工签人士和新永久居民的加拿大登陆前后 6 个月中文任务管理、信息整理与生活资源导航工具。",
   manifest: "/manifest.webmanifest",
+  category: "productivity",
   appleWebApp: {
     capable: true,
-    title: "我要移民啦",
+    title: "TodoCa",
     statusBarStyle: "default",
   },
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: [
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
   themeColor: "#9e3434",
 };
 
@@ -46,10 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="zh-CN"
-      className={`${nunitoSans.variable} ${notoSansSC.variable} h-full antialiased`}
-    >
+    <html lang="zh-CN" className="h-full antialiased">
       <body className="surface-page min-h-full">
         {children}
       </body>

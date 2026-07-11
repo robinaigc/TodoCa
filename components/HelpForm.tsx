@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { LeadCategory } from "@/types";
 import { getSupabase } from "@/lib/supabase";
 import { loadProfile } from "@/lib/store";
+import SupportEmailLink from "@/components/SupportEmailLink";
 
 const CATEGORIES: { id: LeadCategory; label: string }[] = [
   { id: "housing", label: "租房" },
@@ -31,7 +32,7 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
   const [description, setDescription] = useState("");
   const [urgent, setUrgent] = useState(false);
   const [willingToPay, setWillingToPay] = useState(false);
-  const [state, setState] = useState<"idle" | "submitting" | "done" | "error">("idle");
+  const [state, setState] = useState<"idle" | "submitting" | "sent" | "saved-local" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
@@ -58,24 +59,37 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
       status: "new",
     };
 
-    const supabase = getSupabase();
-    if (supabase) {
-      const { error } = await supabase.from("service_leads").insert(lead);
-      if (error) {
-        setState("error");
-        setErrorMsg("提交失败，请稍后再试，或直接发邮件联系我们。");
-        return;
-      }
-    } else {
+    function saveLocally() {
       const key = "todoca_leads_local";
-      const existing = JSON.parse(localStorage.getItem(key) ?? "[]");
+      const parsed: unknown = JSON.parse(localStorage.getItem(key) ?? "[]");
+      const existing = Array.isArray(parsed) ? parsed : [];
       existing.push({ ...lead, created_at: new Date().toISOString() });
       localStorage.setItem(key, JSON.stringify(existing));
     }
-    setState("done");
+
+    const supabase = getSupabase();
+    if (supabase) {
+      try {
+        const { error } = await supabase.from("service_leads").insert(lead);
+        if (!error) {
+          setState("sent");
+          return;
+        }
+      } catch {
+        // Network and SDK failures use the same clearly disclosed local fallback.
+      }
+    }
+
+    try {
+      saveLocally();
+      setState("saved-local");
+    } catch {
+      setState("error");
+      setErrorMsg("暂时无法发送或保存在此设备。请通过下方公开邮箱联系我们。");
+    }
   }
 
-  if (state === "done") {
+  if (state === "sent") {
     return (
       <div className="card-soft bg-success-soft/60 p-6 text-center">
         <p className="text-2xl">✅</p>
@@ -83,6 +97,19 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
         <p className="mt-1 text-sm text-text-secondary">
           我们会根据问题类型尽快通过邮箱或微信联系你。
         </p>
+      </div>
+    );
+  }
+
+  if (state === "saved-local") {
+    return (
+      <div className="card-soft bg-brand-soft p-6 text-center">
+        <p className="text-2xl">⚠️</p>
+        <p className="mt-2 font-semibold text-brand">仅保存在此设备，尚未发送</p>
+        <p className="mt-1 text-sm leading-relaxed text-text-secondary">
+          当前无法连接协助服务。你的内容已暂存在本浏览器，不会自动发送给我们。请发送邮件至：
+        </p>
+        <p className="mt-2 break-all text-sm"><SupportEmailLink className="font-semibold text-brand" /></p>
       </div>
     );
   }
@@ -162,13 +189,18 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
         愿意预约付费咨询
       </label>
 
-      {errorMsg && <p className="text-sm text-brand">{errorMsg}</p>}
+      {errorMsg && (
+        <div className="text-sm text-brand">
+          <p>{errorMsg}</p>
+          {state === "error" && <p className="mt-1 break-all"><SupportEmailLink className="font-semibold" /></p>}
+        </div>
+      )}
 
       <button type="submit" disabled={state === "submitting"} className="btn-primary w-full py-3 text-[15px]">
         {state === "submitting" ? "提交中…" : "提交我的问题"}
       </button>
       <p className="text-center text-[11px] leading-relaxed text-text-muted">
-        提交即同意我们通过邮箱/微信联系你，你的信息仅用于本次协助，不会用于其他用途。
+        提交即同意我们通过邮箱/微信联系你。信息仅用于联系你并回应本次协助请求；服务不可用时可能仅保存在本浏览器，并会明确提示。
       </p>
     </form>
   );

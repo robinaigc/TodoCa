@@ -13,9 +13,10 @@
   --color-text-muted: #9ca3af;
   --color-success: #0d9488;
   --color-success-soft: #ecfdf5;
-  --font-sans: var(--font-noto), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui,
     sans-serif;
-  --font-rounded: var(--font-nunito), var(--font-noto), sans-serif;
+  --font-rounded: ui-rounded, "Nunito Sans", "PingFang SC", "Microsoft YaHei",
+    system-ui, sans-serif;
   --radius-card: 1.75rem;
   --radius-button: 1rem;
   --shadow-card: 0 4px 24px rgb(26 29 38 / 0.06);

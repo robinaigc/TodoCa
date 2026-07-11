@@ -2,25 +2,33 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "我要移民啦 · 加拿大登陆清单",
-    short_name: "我要移民啦",
-    description: "加拿大登陆前后 6 个月中文任务清单",
+    id: "/",
+    name: "TodoCa / 我要移民啦",
+    short_name: "TodoCa",
+    description: "加拿大登陆前后 6 个月中文任务管理、信息整理与生活资源导航工具",
     start_url: "/",
+    scope: "/",
     display: "standalone",
     background_color: "#fafafa",
     theme_color: "#9e3434",
     lang: "zh-CN",
     icons: [
       {
-        src: "/icon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
         purpose: "any",
       },
       {
-        src: "/icon-maskable.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-maskable-512.png",
+        sizes: "512x512",
+        type: "image/png",
         purpose: "maskable",
       },
     ],

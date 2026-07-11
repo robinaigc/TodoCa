@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import HelpForm from "@/components/HelpForm";
 import PageHeader from "@/components/PageHeader";
 import type { LeadCategory } from "@/types";
+import SupportEmailLink from "@/components/SupportEmailLink";
 
 const VALID_CATEGORIES: LeadCategory[] = [
   "housing", "health", "bill", "school", "bank", "phone", "sin", "kids_school", "english_mail", "other",
@@ -27,6 +28,7 @@ function HelpContent() {
       <HelpForm defaultCategory={category} relatedTaskId={taskId} />
       <p className="mt-6 text-center text-[11px] leading-relaxed text-text-muted">
         本服务提供一般生活信息协助，不构成法律、医疗、税务或移民专业意见。
+        <br />公开联系邮箱：<SupportEmailLink className="font-semibold text-brand" />
       </p>
     </main>
   );
