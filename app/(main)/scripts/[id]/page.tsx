@@ -85,7 +85,7 @@ function ScriptBlock({ label, text }: { label: string; text: string }) {
     <section className="mt-6">
       <div className="mb-2 flex items-center justify-between">
         <h2 className="text-[15px] font-bold text-text-primary">{label}</h2>
-        <button onClick={copy} className="link-brand text-sm">
+        <button onClick={copy} className="link-brand min-h-11 rounded-xl px-2 text-sm">
           {copied ? "✓ 已复制" : "复制"}
         </button>
       </div>

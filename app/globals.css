@@ -33,6 +33,10 @@ body {
   font-feature-settings: "kern" 1;
   background-color: var(--color-surface);
   color: var(--color-text-primary);
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  overscroll-behavior-y: none;
 }
 
 /* ── ANZ 风格：大圆角白卡片 + 轻阴影 ── */
@@ -116,6 +120,10 @@ body {
 }
 
 @utility pill-active {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
   background-color: white;
   box-shadow: var(--shadow-card-sm);
   border-radius: 9999px;
@@ -124,6 +132,10 @@ body {
 }
 
 @utility pill-inactive {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
   border-radius: 9999px;
   color: var(--color-text-secondary);
   font-weight: 500;
@@ -178,6 +190,14 @@ body {
   background-color: white;
   box-shadow: var(--shadow-nav);
   padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@media (max-width: 640px) {
+  body:has(input:focus, textarea:focus, select:focus) .nav-bar {
+    display: none;
+  }
 }
 
 @utility list-row {

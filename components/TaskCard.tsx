@@ -26,13 +26,17 @@ export default function TaskCard({ task, status, onComplete, showStage }: Props)
         <button
           aria-label={completed ? "已完成" : "标记完成"}
           onClick={() => onComplete?.(task.id)}
-          className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm transition ${
-            completed
-              ? "bg-[var(--color-success)] text-white shadow-sm"
-              : "bg-white text-transparent shadow-[var(--shadow-card-sm)] ring-2 ring-[#e4e8ef] hover:ring-brand/40"
-          }`}
+          className="-m-2 mt-[-0.375rem] flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
         >
-          ✓
+          <span
+            className={`flex h-7 w-7 items-center justify-center rounded-full text-sm transition ${
+              completed
+                ? "bg-[var(--color-success)] text-white shadow-sm"
+                : "bg-white text-transparent shadow-[var(--shadow-card-sm)] ring-2 ring-[#e4e8ef] hover:ring-brand/40"
+            }`}
+          >
+            ✓
+          </span>
         </button>
 
         <Link href={`/tasks/${task.id}`} className="min-w-0 flex-1">

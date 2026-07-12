@@ -170,7 +170,7 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
           placeholder="用中文描述你的问题，越具体越好"
         />
       </div>
-      <label className="flex items-center gap-2 text-sm text-text-secondary">
+      <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
         <input
           type="checkbox"
           checked={urgent}
@@ -179,7 +179,7 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
         />
         比较紧急，希望尽快联系我
       </label>
-      <label className="flex items-center gap-2 text-sm text-text-secondary">
+      <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
         <input
           type="checkbox"
           checked={willingToPay}

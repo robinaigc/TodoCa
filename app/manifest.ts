@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "TodoCa / 我要移民啦",
     short_name: "TodoCa",
     description: "加拿大登陆前后 6 个月中文任务管理、信息整理与生活资源导航工具",
-    start_url: "/",
+    start_url: "/dashboard",
     scope: "/",
     display: "standalone",
     background_color: "#fafafa",

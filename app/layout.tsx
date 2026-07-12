@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import PwaRuntime from "@/components/PwaRuntime";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: "#9e3434",
 };
 
@@ -39,6 +41,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="h-full antialiased">
       <body className="surface-page min-h-full">
+        <PwaRuntime />
         {children}
       </body>
     </html>

@@ -152,7 +152,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
         </Section>
       )}
 
-      <div className="fixed inset-x-0 bottom-14 z-30 bg-white px-4 py-3 shadow-[var(--shadow-nav)] pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+      <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 bg-white px-4 py-3 shadow-[var(--shadow-nav)]">
         <div className="mx-auto flex max-w-lg gap-3">
           <button
             onClick={() => setTaskStatus(task.id, status === "skipped" ? "not_started" : "skipped")}
