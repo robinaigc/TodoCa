@@ -23,7 +23,7 @@ npm install
 npm run dev
 ```
 
-打开 http://localhost:3000。未配置 Supabase 时应用照常运行（人工协助表单降级为本地保存）。
+打开 http://localhost:3000。未配置 Supabase 时应用照常运行（人工协助表单会明确提示“仅保存在此设备，尚未发送”）。
 
 ## Supabase 配置
 
@@ -35,16 +35,17 @@ npm run dev
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_xxxx
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxx
+NEXT_PUBLIC_SUPPORT_EMAIL=public@example.com
 ```
 
-RLS 设计：匿名用户只能 INSERT 线索，不能读取/修改/删除。运营者在 Supabase Dashboard → Table Editor 中查看 `service_leads`。
+RLS 与 Data API 权限按最小权限配置：仅匿名角色可以 INSERT 表单字段，不能读取、修改或删除；authenticated 角色不授予访问权限。运营者在 Supabase Dashboard → Table Editor 中查看 `service_leads`。
 
 ## 部署到 Vercel
 
 1. 把仓库推到 GitHub。
 2. 在 [vercel.com](https://vercel.com/) Import 该仓库（框架自动识别为 Next.js）。
-3. 在 Environment Variables 中添加 `NEXT_PUBLIC_SUPABASE_URL` 和 `NEXT_PUBLIC_SUPABASE_ANON_KEY`。
+3. 在 Environment Variables 中添加 `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 和 `NEXT_PUBLIC_SUPPORT_EMAIL`。
 4. Deploy。之后每次 `git push` 自动部署。
 
 ## 项目结构

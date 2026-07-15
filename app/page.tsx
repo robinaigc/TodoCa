@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useAppState } from "@/lib/store";
+import LegalLinks from "@/components/LegalLinks";
 
 const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
   {
@@ -104,12 +105,15 @@ export default function LandingPage() {
         })}
       </div>
 
-      <p className="mt-10 text-center text-[11px] leading-relaxed text-text-muted">
-        本产品提供一般生活信息和任务整理，不替代律师、医生、会计师、持牌移民顾问或其他专业人士的意见。
-        涉及移民、法律、医疗、税务、保险等问题，请咨询合资格专业人士或官方机构。
-        <br />
-        你的个人信息和任务进度保存在你的设备本地，我们不收集你的个人信息。
-      </p>
+      <footer className="mt-10 border-t border-[#dfe3ea] pt-6">
+        <LegalLinks />
+        <p className="mt-4 text-center text-[11px] leading-relaxed text-text-muted">
+          本产品提供一般生活信息和任务整理，不替代律师、医生、会计师、持牌移民顾问或其他专业人士的意见。
+          涉及移民、法律、医疗、税务、保险等问题，请咨询合资格专业人士或官方机构。
+          <br />
+          你的用户画像和任务进度保存在当前浏览器本地；协助表单仅在你主动提交时收集联系方式。
+        </p>
+      </footer>
     </main>
   );
 }

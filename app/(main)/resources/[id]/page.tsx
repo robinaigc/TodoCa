@@ -63,7 +63,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             <p className="text-xs text-text-muted">地址</p>
             <p className="mt-0.5 text-sm text-text-primary">{resource.address}</p>
           </div>
-          <button onClick={copyAddress} className="link-brand shrink-0 text-sm">
+          <button onClick={copyAddress} className="link-brand min-h-11 shrink-0 rounded-xl px-2 text-sm">
             {copied ? "✓ 已复制" : "复制"}
           </button>
         </div>
