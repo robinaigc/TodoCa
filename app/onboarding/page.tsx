@@ -152,22 +152,24 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   return (
-    <main className="surface-page mx-auto flex h-[calc(100dvh-env(safe-area-inset-top))] max-w-lg flex-col overflow-y-auto px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-8">
-      <div className="mb-6 flex items-center gap-2">
-        {steps.map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 flex-1 rounded-full ${
-              i <= step ? "bg-brand" : "bg-surface-muted"
-            }`}
-          />
-        ))}
+    <main className="surface-page mx-auto flex h-[calc(100dvh-env(safe-area-inset-top))] max-w-lg flex-col overflow-hidden px-5 pt-8">
+      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+        <div className="mb-6 flex items-center gap-2">
+          {steps.map((_, i) => (
+            <div
+              key={i}
+              className={`h-1.5 flex-1 rounded-full ${
+                i <= step ? "bg-brand" : "bg-surface-muted"
+              }`}
+            />
+          ))}
+        </div>
+
+        <h1 className="text-2xl font-bold tracking-tight text-text-primary">{current.title}</h1>
+        <div className="mt-6">{current.body}</div>
       </div>
 
-      <h1 className="text-2xl font-bold tracking-tight text-text-primary">{current.title}</h1>
-      <div className="mt-6 flex-1">{current.body}</div>
-
-      <div className="mt-8 flex gap-3">
+      <div className="flex shrink-0 gap-3 bg-surface pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         {step > 0 && (
           <button onClick={() => setStep(step - 1)} className="btn-secondary px-5 py-3.5 text-[15px]">
             上一步
