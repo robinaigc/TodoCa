@@ -26,7 +26,7 @@ const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
   },
   {
     icon: MessageSquareText,
-    title: "英文办事对照",
+    title: "英文办事对话",
     desc: "租房、银行、医保、诊所…照着说就行，还有邮件模板。",
   },
   {

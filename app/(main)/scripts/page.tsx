@@ -19,7 +19,7 @@ export default function ScriptsPage() {
 
   return (
     <main>
-      <PageHeader title="英文对照库" subtitle="办事不会说？照着念就行，还有邮件模板。" />
+      <PageHeader title="英文对话库" subtitle="办事不会说？照着念就行，还有邮件模板。" />
 
       <div className="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1">
         <Pill active={category === null} onClick={() => setCategory(null)} label="全部" />

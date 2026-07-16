@@ -111,7 +111,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       )}
 
       {task.englishScript && (
-        <Section title="英文对照">
+        <Section title="英文对话">
           <blockquote className="card-soft-sm border-l-4 border-brand/30 p-4 text-[15px] italic leading-relaxed text-text-primary">
             “{task.englishScript}”
           </blockquote>
@@ -120,7 +120,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
               {relatedScripts.map((s) => (
                 <Link key={s.id} href={`/scripts/${s.id}`} className="link-brand flex items-center gap-1.5 text-sm">
                   <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
-                  更多对照：{s.titleZh} →
+                  更多对话：{s.titleZh} →
                 </Link>
               ))}
             </div>

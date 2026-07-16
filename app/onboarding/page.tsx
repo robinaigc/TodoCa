@@ -104,7 +104,7 @@ export default function OnboardingPage() {
         <div className="space-y-5">
           <YesNoRow label="是否带孩子一起？" value={hasChildren} onChange={setHasChildren} />
           <YesNoRow label="是否已有长期住房？" value={hasHousing} onChange={setHasHousing} />
-          <YesNoRow label="是否有车或计划开车？" value={hasCarPlan} onChange={setHasCarPlan} />
+          <YesNoRow label="是否有车？" value={hasCarPlan} onChange={setHasCarPlan} />
         </div>
       ),
     },

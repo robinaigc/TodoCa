@@ -14,7 +14,7 @@ import {
 const NAV_ITEMS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/dashboard", label: "今日", icon: LayoutDashboard },
   { href: "/tasks", label: "任务", icon: ListChecks },
-  { href: "/scripts", label: "对照", icon: MessageSquareText },
+  { href: "/scripts", label: "对话", icon: MessageSquareText },
   { href: "/map", label: "导航", icon: Navigation },
   { href: "/profile", label: "我的", icon: User },
 ];

@@ -21,7 +21,7 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
         className="mb-4 inline-flex min-h-11 items-center gap-1 rounded-xl py-2 pr-3 pl-1 text-[15px] font-semibold text-text-secondary active:opacity-70"
       >
         <ChevronLeft className="h-6 w-6 shrink-0" strokeWidth={2.25} />
-        返回对照库
+        返回对话库
       </Link>
       <h1 className="text-2xl font-bold text-text-primary">{script.titleZh}</h1>
       <p className="mt-2 text-[15px] text-text-secondary">

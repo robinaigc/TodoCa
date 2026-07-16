@@ -47,7 +47,7 @@ export default function ProfilePage() {
         <Row label="当前阶段" value={stageName(stage.stageId)} />
         <Row label="带孩子" value={profile.hasChildren ? "是" : "否"} />
         <Row label="已有住房" value={profile.hasHousing ? "是" : "否"} />
-        <Row label="有车/计划开车" value={profile.hasCarPlan ? "是" : "否"} last />
+        <Row label="有车" value={profile.hasCarPlan ? "是" : "否"} last />
       </section>
 
       <section className="mt-4 grid grid-cols-3 gap-3">
