@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BadgeCheck,
   BriefcaseBusiness,
@@ -34,6 +34,7 @@ type YesNo = boolean | null;
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const contentRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(0);
 
   const [identity, setIdentity] = useState<IdentityType | null>(null);
@@ -43,6 +44,10 @@ export default function OnboardingPage() {
   const [hasHousing, setHasHousing] = useState<YesNo>(null);
   const [hasCarPlan, setHasCarPlan] = useState<YesNo>(null);
   const [topConcerns, setTopConcerns] = useState<TopConcern[]>([]);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0 });
+  }, [step]);
 
   function toggleConcern(id: TopConcern) {
     setTopConcerns((prev) =>
@@ -152,8 +157,8 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   return (
-    <main className="surface-page mx-auto flex h-[calc(100dvh-env(safe-area-inset-top))] max-w-lg flex-col overflow-hidden px-5 pt-8">
-      <div className="min-h-0 flex-1 overflow-y-auto pb-4">
+    <main className="surface-page fixed inset-x-0 bottom-0 top-[env(safe-area-inset-top)] mx-auto flex max-w-lg flex-col overflow-hidden px-5 pt-8">
+      <div ref={contentRef} className="min-h-0 flex-1 overscroll-contain overflow-y-auto pb-4">
         <div className="mb-6 flex items-center gap-2">
           {steps.map((_, i) => (
             <div

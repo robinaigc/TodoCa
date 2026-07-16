@@ -179,7 +179,7 @@ body {
 }
 
 @utility choice-card-active {
-  box-shadow: var(--shadow-card), 0 0 0 2px var(--color-brand);
+  box-shadow: var(--shadow-card), inset 0 0 0 2px var(--color-brand);
 }
 
 @utility nav-bar {
