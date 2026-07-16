@@ -2,13 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  BadgeCheck,
+  BriefcaseBusiness,
+  GraduationCap,
+  MapPin,
+  PartyPopper,
+  type LucideIcon,
+} from "lucide-react";
 import type { IdentityType, Profile, TopConcern } from "@/types";
 import { loadProfile, setProfile } from "@/lib/store";
 
-const IDENTITIES: { id: IdentityType; label: string; desc: string }[] = [
-  { id: "student", label: "🎓 留学生", desc: "持学签来读书" },
-  { id: "work_permit", label: "💼 工签人士", desc: "持工签来工作" },
-  { id: "new_pr", label: "🍁 新 PR", desc: "持 COPR / PR 卡登陆" },
+const IDENTITIES: { id: IdentityType; label: string; desc: string; icon: LucideIcon }[] = [
+  { id: "student", label: "留学生", desc: "持学签来读书", icon: GraduationCap },
+  { id: "work_permit", label: "工签人士", desc: "持工签来工作", icon: BriefcaseBusiness },
+  { id: "new_pr", label: "新 PR", desc: "持 COPR / PR 卡登陆", icon: BadgeCheck },
 ];
 
 const CONCERNS: { id: TopConcern; label: string }[] = [
@@ -55,6 +63,7 @@ export default function OnboardingPage() {
               onClick={() => setIdentity(i.id)}
               label={i.label}
               desc={i.desc}
+              icon={i.icon}
             />
           ))}
         </div>
@@ -66,7 +75,11 @@ export default function OnboardingPage() {
       body: (
         <div className="space-y-5">
           <div>
-            <p className="mb-2 text-sm text-text-secondary">目的地暂时只开放：🇨🇦 温哥华（BC 省）</p>
+            <p className="mb-2 flex items-center gap-1.5 text-sm text-text-secondary">
+              目的地暂时只开放：
+              <MapPin className="h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
+              温哥华（BC 省）
+            </p>
             <input
               type="date"
               value={landingDate}
@@ -139,7 +152,7 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   return (
-    <main className="surface-page mx-auto flex min-h-dvh max-w-lg flex-col px-5 pb-8 pt-8">
+    <main className="surface-page mx-auto flex h-[calc(100dvh-env(safe-area-inset-top))] max-w-lg flex-col overflow-y-auto px-5 pb-[calc(2rem+env(safe-area-inset-bottom))] pt-8">
       <div className="mb-6 flex items-center gap-2">
         {steps.map((_, i) => (
           <div
@@ -165,7 +178,14 @@ export default function OnboardingPage() {
           onClick={() => (isLast ? finish() : setStep(step + 1))}
           className="btn-primary flex-1 py-3.5 text-[15px]"
         >
-          {isLast ? "生成我的登陆清单 🎉" : "下一步"}
+          {isLast ? (
+            <span className="inline-flex items-center gap-2">
+              生成我的登陆清单
+              <PartyPopper className="h-5 w-5" aria-hidden="true" />
+            </span>
+          ) : (
+            "下一步"
+          )}
         </button>
       </div>
     </main>
@@ -178,6 +198,7 @@ function ChoiceCard({
   label,
   desc,
   checked,
+  icon: Icon,
 }: {
   active: boolean;
   onClick: () => void;
@@ -185,6 +206,7 @@ function ChoiceCard({
   desc?: string;
   /** 多选场景：显示勾选标记 */
   checked?: boolean;
+  icon?: LucideIcon;
 }) {
   return (
     <button
@@ -193,7 +215,10 @@ function ChoiceCard({
       className={`choice-card ${active ? "choice-card-active" : ""}`}
     >
       <p className="flex items-center justify-between text-[15px] font-semibold text-text-primary">
-        {label}
+        <span className="flex items-center gap-3">
+          {Icon && <Icon className="h-5 w-5 shrink-0 text-brand" strokeWidth={2} aria-hidden="true" />}
+          {label}
+        </span>
         {checked && <span className="text-brand">✓</span>}
       </p>
       {desc && <p className="mt-0.5 text-sm text-text-secondary">{desc}</p>}

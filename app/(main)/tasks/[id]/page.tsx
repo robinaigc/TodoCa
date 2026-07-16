@@ -1,7 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import {
+  ChevronLeft,
+  CircleCheck,
+  CircleX,
+  Clock3,
+  ExternalLink,
+  FileText,
+  MessageCircle,
+  UserRound,
+} from "lucide-react";
 import { use } from "react";
 import { notFound } from "next/navigation";
 import { TASK_MAP } from "@/data/tasks";
@@ -47,8 +56,8 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       <p className="mt-0.5 text-sm text-text-muted">{task.titleEn}</p>
 
       <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-text-secondary">
-        <span>⏱ 预计 {task.estimatedTime}</span>
-        <span>👤 适用：{task.identities.map((i) => IDENTITY_LABELS[i]).join("、")}</span>
+        <span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" aria-hidden="true" />预计 {task.estimatedTime}</span>
+        <span className="inline-flex items-center gap-1"><UserRound className="h-3.5 w-3.5" aria-hidden="true" />适用：{task.identities.map((i) => IDENTITY_LABELS[i]).join("、")}</span>
       </div>
 
       <Section title="为什么要做">
@@ -60,7 +69,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
           <ul className="space-y-1.5">
             {task.requiredDocs.map((d, i) => (
               <li key={i} className="flex gap-2">
-                <span className="text-text-muted">📄</span>
+                <FileText className="mt-0.5 h-4 w-4 shrink-0 text-text-muted" aria-hidden="true" />
                 <span>{d}</span>
               </li>
             ))}
@@ -82,8 +91,9 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       </Section>
 
       <Section title="完成标准">
-        <div className="card-soft-sm bg-success-soft/50 p-4 text-success">
-          ✅ {task.completionStandard}
+        <div className="card-soft-sm flex items-start gap-2 bg-success-soft/50 p-4 text-success">
+          <CircleCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+          <span>{task.completionStandard}</span>
         </div>
       </Section>
 
@@ -92,7 +102,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
           <ul className="space-y-1.5">
             {task.commonMistakes.map((m, i) => (
               <li key={i} className="flex gap-2">
-                <span>❌</span>
+                <CircleX className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
                 <span>{m}</span>
               </li>
             ))}
@@ -108,8 +118,9 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
           {relatedScripts.length > 0 && (
             <div className="mt-2 space-y-1">
               {relatedScripts.map((s) => (
-                <Link key={s.id} href={`/scripts/${s.id}`} className="link-brand block text-sm">
-                  💬 更多对照：{s.titleZh} →
+                <Link key={s.id} href={`/scripts/${s.id}`} className="link-brand flex items-center gap-1.5 text-sm">
+                  <MessageCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  更多对照：{s.titleZh} →
                 </Link>
               ))}
             </div>
@@ -128,7 +139,10 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
                   rel="noopener noreferrer"
                   className="link-brand text-sm underline"
                 >
-                  🔗 {s.name}
+                  <span className="inline-flex items-center gap-1.5">
+                    <ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    {s.name}
+                  </span>
                 </a>
               </li>
             ))}

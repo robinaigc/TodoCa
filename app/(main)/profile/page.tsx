@@ -9,9 +9,9 @@ import PageHeader from "@/components/PageHeader";
 import type { IdentityType } from "@/types";
 
 const IDENTITY_LABELS: Record<IdentityType, string> = {
-  student: "🎓 留学生",
-  work_permit: "💼 工签人士",
-  new_pr: "🍁 新 PR",
+  student: "留学生",
+  work_permit: "工签人士",
+  new_pr: "新 PR",
 };
 
 export default function ProfilePage() {

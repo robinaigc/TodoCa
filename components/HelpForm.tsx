@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CircleCheck, TriangleAlert } from "lucide-react";
 import type { LeadCategory } from "@/types";
 import { getSupabase } from "@/lib/supabase";
 import { loadProfile } from "@/lib/store";
@@ -92,7 +93,7 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
   if (state === "sent") {
     return (
       <div className="card-soft bg-success-soft/60 p-6 text-center">
-        <p className="text-2xl">✅</p>
+        <CircleCheck className="mx-auto h-8 w-8 text-success" aria-hidden="true" />
         <p className="mt-2 font-semibold text-success">问题已提交</p>
         <p className="mt-1 text-sm text-text-secondary">
           我们会根据问题类型尽快通过邮箱或微信联系你。
@@ -104,7 +105,7 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
   if (state === "saved-local") {
     return (
       <div className="card-soft bg-brand-soft p-6 text-center">
-        <p className="text-2xl">⚠️</p>
+        <TriangleAlert className="mx-auto h-8 w-8 text-brand" aria-hidden="true" />
         <p className="mt-2 font-semibold text-brand">仅保存在此设备，尚未发送</p>
         <p className="mt-1 text-sm leading-relaxed text-text-secondary">
           当前无法连接协助服务。你的内容已暂存在本浏览器，不会自动发送给我们。请发送邮件至：

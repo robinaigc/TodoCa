@@ -31,7 +31,7 @@ export default function DashboardPage() {
     data.landedDays < 0
       ? `距离登陆还有 ${-data.landedDays} 天`
       : data.isFinished
-        ? "落地期已结束 🎉"
+        ? "落地期已结束"
         : `已登陆第 ${data.landedDays + 1} 天`;
 
   return (

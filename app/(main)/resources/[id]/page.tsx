@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Lightbulb, MapPinned } from "lucide-react";
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import { RESOURCE_MAP, RESOURCE_CATEGORIES } from "@/data/resources";
@@ -52,8 +52,9 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
       <p className="mt-2 text-[15px] text-text-secondary">{resource.descriptionZh}</p>
 
       {resource.notesZh && (
-        <div className="card-soft-sm mt-4 bg-brand-soft/40 p-4 text-sm leading-relaxed text-text-primary">
-          💡 {resource.notesZh}
+        <div className="card-soft-sm mt-4 flex items-start gap-2 bg-brand-soft/40 p-4 text-sm leading-relaxed text-text-primary">
+          <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
+          <span>{resource.notesZh}</span>
         </div>
       )}
 
@@ -90,8 +91,9 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
         )}
       </div>
 
-      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary mt-5 block py-3.5 text-center text-[15px]">
-        🗺 在 Google Maps 中打开
+      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary mt-5 flex py-3.5 text-center text-[15px]">
+        <MapPinned className="mr-2 h-5 w-5" aria-hidden="true" />
+        在 Google Maps 中打开
       </a>
 
       <p className="mt-4 text-center text-[11px] text-text-muted">

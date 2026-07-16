@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ClipboardList } from "lucide-react";
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import { SCRIPT_MAP } from "@/data/scripts";
@@ -60,8 +60,9 @@ export default function ScriptDetailPage({ params }: { params: Promise<{ id: str
       )}
 
       {relatedTask && (
-        <Link href={`/tasks/${relatedTask.id}`} className="list-row mt-8 text-sm">
-          📋 相关任务：<span className="font-semibold text-text-primary">{relatedTask.titleZh}</span> →
+        <Link href={`/tasks/${relatedTask.id}`} className="list-row mt-8 flex items-center gap-2 text-sm">
+          <ClipboardList className="h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
+          <span>相关任务：<span className="font-semibold text-text-primary">{relatedTask.titleZh}</span> →</span>
         </Link>
       )}
     </main>
