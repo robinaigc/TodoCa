@@ -46,6 +46,11 @@ export default function OnboardingPage() {
   const [topConcerns, setTopConcerns] = useState<TopConcern[]>([]);
 
   useEffect(() => {
+    document.body.classList.add("onboarding-active");
+    return () => document.body.classList.remove("onboarding-active");
+  }, []);
+
+  useEffect(() => {
     contentRef.current?.scrollTo({ top: 0 });
   }, [step]);
 
@@ -157,7 +162,7 @@ export default function OnboardingPage() {
   const isLast = step === steps.length - 1;
 
   return (
-    <main className="surface-page fixed inset-x-0 bottom-0 top-[env(safe-area-inset-top)] mx-auto flex max-w-lg flex-col overflow-hidden px-5 pt-8">
+    <main className="surface-page fixed inset-0 mx-auto flex max-w-lg flex-col overflow-hidden px-5 pt-[calc(2rem+env(safe-area-inset-top))]">
       <div ref={contentRef} className="min-h-0 flex-1 overscroll-contain overflow-y-auto pb-4">
         <div className="mb-6 flex items-center gap-2">
           {steps.map((_, i) => (

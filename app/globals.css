@@ -39,6 +39,11 @@ body {
   overscroll-behavior-y: none;
 }
 
+body.onboarding-active {
+  padding: 0;
+  overflow: hidden;
+}
+
 /* ── ANZ 风格：大圆角白卡片 + 轻阴影 ── */
 @utility card-soft {
   background-color: white;
