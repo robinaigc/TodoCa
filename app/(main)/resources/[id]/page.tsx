@@ -14,9 +14,9 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
   if (!resource) notFound();
 
   const catName = RESOURCE_CATEGORIES.find((c) => c.id === resource.category)?.nameZh;
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    `${resource.name} ${resource.address}`
-  )}`;
+  const locationQuery = encodeURIComponent(`${resource.name} ${resource.address}`);
+  const appleMapsUrl = `https://maps.apple.com/?q=${locationQuery}`;
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${locationQuery}`;
 
   async function copyAddress() {
     try {
@@ -91,10 +91,16 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
         )}
       </div>
 
-      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary mt-5 flex py-3.5 text-center text-[15px]">
-        <MapPinned className="mr-2 h-5 w-5" aria-hidden="true" />
-        在 Google Maps 中打开
-      </a>
+      <div className="mt-5 grid gap-3">
+        <a href={appleMapsUrl} target="_blank" rel="noopener noreferrer" className="btn-primary flex py-3.5 text-center text-[15px]">
+          <MapPinned className="mr-2 h-5 w-5" aria-hidden="true" />
+          在 Apple Maps 中打开
+        </a>
+        <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary flex py-3.5 text-center text-[15px]">
+          <MapPinned className="mr-2 h-5 w-5" aria-hidden="true" />
+          在 Google Maps 中打开
+        </a>
+      </div>
 
       <p className="mt-4 text-center text-[11px] text-text-muted">
         地址和电话可能变动，出发前建议先打电话或查官网确认。
