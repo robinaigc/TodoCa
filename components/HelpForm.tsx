@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CircleCheck, TriangleAlert } from "lucide-react";
 import type { LeadCategory } from "@/types";
 import { getSupabase } from "@/lib/supabase";
-import { loadProfile } from "@/lib/store";
+import { useAppState } from "@/lib/store";
 import SupportEmailLink from "@/components/SupportEmailLink";
 
 const CATEGORIES: { id: LeadCategory; label: string }[] = [
@@ -23,9 +23,17 @@ const CATEGORIES: { id: LeadCategory; label: string }[] = [
 interface Props {
   defaultCategory?: LeadCategory;
   relatedTaskId?: string;
+  submissionKind?: "help" | "correction";
+  contentLabel?: string;
 }
 
-export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
+export default function HelpForm({
+  defaultCategory,
+  relatedTaskId,
+  submissionKind = "help",
+  contentLabel,
+}: Props) {
+  const { profile } = useAppState();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [wechat, setWechat] = useState("");
@@ -45,7 +53,10 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
     setErrorMsg("");
     setState("submitting");
 
-    const profile = loadProfile();
+    const correctionPrefix =
+      submissionKind === "correction"
+        ? `[内容纠错${contentLabel ? `：${contentLabel}` : ""}]\n`
+        : "";
     const lead = {
       name: name.trim(),
       email: email.trim(),
@@ -55,14 +66,19 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
       category,
       urgency: urgent ? "urgent" : "normal",
       willing_to_pay: willingToPay,
-      description: description.trim(),
+      description: `${correctionPrefix}${description.trim()}`.slice(0, 5000),
       related_task_id: relatedTaskId ?? null,
       status: "new",
     };
 
     function saveLocally() {
       const key = "todoca_leads_local";
-      const parsed: unknown = JSON.parse(localStorage.getItem(key) ?? "[]");
+      let parsed: unknown = [];
+      try {
+        parsed = JSON.parse(localStorage.getItem(key) ?? "[]");
+      } catch {
+        // Replace an unreadable local fallback instead of losing the current submission.
+      }
       const existing = Array.isArray(parsed) ? parsed : [];
       existing.push({ ...lead, created_at: new Date().toISOString() });
       localStorage.setItem(key, JSON.stringify(existing));
@@ -94,9 +110,13 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
     return (
       <div className="card-soft bg-success-soft/60 p-6 text-center">
         <CircleCheck className="mx-auto h-8 w-8 text-success" aria-hidden="true" />
-        <p className="mt-2 font-semibold text-success">问题已提交</p>
+        <p className="mt-2 font-semibold text-success">
+          {submissionKind === "correction" ? "纠错信息已提交，感谢你" : "问题已提交"}
+        </p>
         <p className="mt-1 text-sm text-text-secondary">
-          我们会根据问题类型尽快通过邮箱或微信联系你。
+          {submissionKind === "correction"
+            ? "我们会核对对应页面，并在确认后更新内容。"
+            : "我们会根据问题类型尽快通过邮箱或微信联系你。"}
         </p>
       </div>
     );
@@ -146,7 +166,9 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
         />
       </div>
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-text-primary">问题类型</label>
+        <label className="mb-1.5 block text-sm font-medium text-text-primary">
+          {submissionKind === "correction" ? "涉及的内容类别" : "问题类型"}
+        </label>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map((c) => (
             <button
@@ -163,32 +185,42 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
         </div>
       </div>
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-text-primary">问题描述 *</label>
+        <label className="mb-1.5 block text-sm font-medium text-text-primary">
+          {submissionKind === "correction" ? "哪里有误或已经变化？ *" : "问题描述 *"}
+        </label>
         <textarea
           className="input-soft min-h-28 resize-none"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="用中文描述你的问题，越具体越好"
+          placeholder={
+            submissionKind === "correction"
+              ? "例如：官网链接失效、地址或电话已变化、政策说明需要更新。若方便，请附上正确来源。"
+              : "用中文描述你的问题，越具体越好"
+          }
         />
       </div>
-      <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
-        <input
-          type="checkbox"
-          checked={urgent}
-          onChange={(e) => setUrgent(e.target.checked)}
-          className="h-4 w-4 accent-brand"
-        />
-        比较紧急，希望尽快联系我
-      </label>
-      <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
-        <input
-          type="checkbox"
-          checked={willingToPay}
-          onChange={(e) => setWillingToPay(e.target.checked)}
-          className="h-4 w-4 accent-brand"
-        />
-        愿意预约付费咨询
-      </label>
+      {submissionKind === "help" && (
+        <>
+          <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
+            <input
+              type="checkbox"
+              checked={urgent}
+              onChange={(e) => setUrgent(e.target.checked)}
+              className="h-4 w-4 accent-brand"
+            />
+            比较紧急，希望尽快联系我
+          </label>
+          <label className="flex min-h-11 items-center gap-2 text-sm text-text-secondary">
+            <input
+              type="checkbox"
+              checked={willingToPay}
+              onChange={(e) => setWillingToPay(e.target.checked)}
+              className="h-4 w-4 accent-brand"
+            />
+            愿意预约付费咨询
+          </label>
+        </>
+      )}
 
       {errorMsg && (
         <div className="text-sm text-brand">
@@ -198,7 +230,11 @@ export default function HelpForm({ defaultCategory, relatedTaskId }: Props) {
       )}
 
       <button type="submit" disabled={state === "submitting"} className="btn-primary w-full py-3 text-[15px]">
-        {state === "submitting" ? "提交中…" : "提交我的问题"}
+        {state === "submitting"
+          ? "提交中…"
+          : submissionKind === "correction"
+            ? "提交纠错信息"
+            : "提交我的问题"}
       </button>
       <p className="text-center text-[11px] leading-relaxed text-text-muted">
         提交即同意我们通过邮箱/微信联系你。信息仅用于联系你并回应本次协助请求；服务不可用时可能仅保存在本浏览器，并会明确提示。

@@ -79,7 +79,7 @@ export default function ProfilePage() {
       <p className="mt-8 text-center text-[11px] leading-relaxed text-text-muted">
         本产品提供一般生活信息和任务整理，不替代律师、医生、会计师、持牌移民顾问或其他专业人士的意见。
         <br />
-        用户画像和任务进度保存在当前浏览器本地；协助表单仅在你主动提交时收集联系方式。
+        用户画像和任务进度保存在当前设备；协助或纠错表单仅在你主动提交时收集联系方式和反馈内容。
       </p>
     </main>
   );

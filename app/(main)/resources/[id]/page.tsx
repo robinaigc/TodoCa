@@ -5,6 +5,7 @@ import { ChevronLeft, Lightbulb, MapPinned } from "lucide-react";
 import { use, useState } from "react";
 import { notFound } from "next/navigation";
 import { RESOURCE_MAP, RESOURCE_CATEGORIES } from "@/data/resources";
+import ContentCorrectionLink from "@/components/ContentCorrectionLink";
 
 export default function ResourceDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -104,7 +105,15 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
       <p className="mt-4 text-center text-[11px] text-text-muted">
         地址和电话可能变动，出发前建议先打电话或查官网确认。
+        {resource.lastVerified && <><br />最近人工核验：{resource.lastVerified}</>}
       </p>
+      <div className="mt-2 text-center">
+        <ContentCorrectionLink
+          contentType="resource"
+          contentId={resource.id}
+          title={resource.name}
+        />
+      </div>
     </main>
   );
 }

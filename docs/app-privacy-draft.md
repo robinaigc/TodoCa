@@ -6,11 +6,11 @@
 
 | 数据 | 代码中的存储 | 用途 | 上传到 TodoCa/Supabase | 与身份关联 | 用于追踪 | 出售 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 身份类型、城市、预计登陆日期、家庭情况 | `localStorage`：`todoca_profile_v1` | 在设备上生成个性化任务 | 否 | 不通过 TodoCa 账户关联；应用无账户 | 否 | 否 |
-| 任务完成、跳过和进度 | `localStorage`：`todoca_progress_v1` | 展示进度并在重开后恢复 | 否 | 不通过 TodoCa 账户关联；应用无账户 | 否 | 否 |
+| 身份类型、城市、预计登陆日期、家庭情况 | iOS：Capacitor Preferences / Apple UserDefaults；Web：`localStorage`；键 `todoca_profile_v1` | 在设备上生成个性化任务 | 否 | 不通过 TodoCa 账户关联；应用无账户 | 否 | 否 |
+| 任务完成、跳过和进度 | iOS：Capacitor Preferences / Apple UserDefaults；Web：`localStorage`；键 `todoca_progress_v1` | 展示进度并在重开后恢复 | 否 | 不通过 TodoCa 账户关联；应用无账户 | 否 | 否 |
 | 提交失败的协助线索副本 | `localStorage`：`todoca_leads_local` | 网络或 Supabase 不可用时避免用户输入丢失 | 否，不会自动重传 | 内容含用户主动填写的联系方式，因此可识别用户，但只留在设备 | 否 | 否 |
 
-更换设备、清除应用/浏览器数据或卸载 App，可能导致上述本地数据丢失。
+更换设备、清除应用/浏览器数据或卸载 App，可能导致上述本地数据丢失。V1.0.1 为兼容升级和安全回退，会继续把画像与进度双写到旧版 Web 存储键；这些副本仍只在当前设备，不会自动上传。
 
 ## B. 通过 Supabase `service_leads` 收集的数据
 
@@ -21,7 +21,7 @@
 | 联系信息：姓名 | `name` | 联系用户并回应协助请求 | 是，字段直接识别/描述提交者 | 否 | 否 |
 | 联系信息：电子邮件地址 | `email` | 联系用户并回应协助请求 | 是 | 否 | 否 |
 | 联系信息：其他联系方式 | `wechat`（可选） | 按用户选择的方式联系 | 是 | 否 | 否 |
-| 用户内容：其他用户内容 | `description`、问题类别、紧急程度、是否愿意付费咨询、关联任务 | 理解并处理协助请求 | 是，与同一条线索中的联系信息共同保存 | 否 | 否 |
+| 用户内容：其他用户内容 | `description`、问题类别、紧急程度、是否愿意付费咨询、关联任务或资源编号 | 理解并处理协助请求或内容纠错 | 是，与同一条线索中的联系信息共同保存 | 否 | 否 |
 | 其他数据 | `identity_type`、固定城市 `Vancouver` | 理解请求背景 | 是，与同一条线索共同保存 | 否 | 否 |
 
 代码没有上传完整任务进度、预计登陆日期或家庭情况。代码没有广告 SDK、Analytics、Firebase 或 Sentry。
@@ -61,3 +61,4 @@ Supabase 是承载 `service_leads` 的基础设施处理方，不应在问卷中
 - 用最终 iOS 二进制抓取一次网络请求，确认没有新增 SDK 或第三方请求。
 - 确认 Supabase RLS 仍只允许匿名 `INSERT`，客户端仅含 publishable/anon key，绝不含 service role key。
 - 如果加入任何原生插件、崩溃报告或统计 SDK，必须重新填写本底稿。
+- 确认 `PrivacyInfo.xcprivacy` 已包含 UserDefaults 的 `NSPrivacyAccessedAPICategoryUserDefaults` 和原因 `CA92.1`，并随 App target 打包。

@@ -18,6 +18,7 @@ import { SCRIPTS } from "@/data/scripts";
 import { useAppState } from "@/lib/store";
 import { taskStatus } from "@/lib/taskEngine";
 import { HighRiskBadge, PriorityBadge, StageBadge } from "@/components/Badges";
+import ContentCorrectionLink from "@/components/ContentCorrectionLink";
 import type { IdentityType, LeadCategory } from "@/types";
 
 const IDENTITY_LABELS: Record<IdentityType, string> = {
@@ -166,16 +167,26 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
         </Section>
       )}
 
+      <div className="mt-5 text-center">
+        <ContentCorrectionLink
+          contentType="task"
+          contentId={task.id}
+          title={task.titleZh}
+        />
+      </div>
+
       <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 bg-white px-4 py-3 shadow-[var(--shadow-nav)]">
         <div className="mx-auto flex max-w-lg gap-3">
           <button
             onClick={() => setTaskStatus(task.id, status === "skipped" ? "not_started" : "skipped")}
+            disabled={!ready}
             className="btn-secondary px-4 py-3 text-sm text-text-secondary"
           >
             {status === "skipped" ? "取消跳过" : "暂时跳过"}
           </button>
           <button
             onClick={() => setTaskStatus(task.id, completed ? "not_started" : "completed")}
+            disabled={!ready}
             className={`flex-1 rounded-2xl py-3 text-[15px] font-semibold text-white shadow-[var(--shadow-card-sm)] ${
               completed
                 ? "bg-[var(--color-success)] active:opacity-90"

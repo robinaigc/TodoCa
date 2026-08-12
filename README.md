@@ -11,7 +11,7 @@
 - **Next.js 16**（App Router + Turbopack）+ React 19 + TypeScript
 - **Tailwind CSS v4**
 - **内容数据**：代码内 TypeScript 数据文件（`/data`），无 CMS
-- **用户数据**：浏览器 localStorage，免注册
+- **用户数据**：iOS 使用 Capacitor Preferences，Web/PWA 使用 localStorage 回退，免注册
 - **线索数据**：Supabase Postgres（仅 `service_leads` 一张表）
 - **PWA**：Next.js manifest，可添加到主屏幕
 - **部署**：Vercel
@@ -71,7 +71,7 @@ data/
 lib/
   stage.ts                阶段计算（登陆日期 → 当前阶段）
   taskEngine.ts           任务过滤、排序、今日聚焦、进度统计
-  store.ts                localStorage 状态管理
+  store.ts                Preferences + Web 回退状态管理与 V1 数据迁移
   supabase.ts             Supabase 客户端（仅用于线索提交）
 types/                    全部 TypeScript 类型
 supabase/schema.sql       数据库 schema + RLS
@@ -96,16 +96,18 @@ docs/PRD-v2.md            需求文档（修订版）
 - ✅ 30 条英文脚本（口语版/完整版/邮件版/对方回答/听不懂怎么说），一键复制
 - ✅ 35 个温哥华资源点，分类筛选 + Google Maps 外链
 - ✅ 人工协助表单 → Supabase service_leads
+- ✅ 任务与资源信息纠错入口（复用 service_leads）
+- ✅ iOS Preferences 持久化与 V1 localStorage 自动迁移
 - ✅ PWA 可安装到主屏幕，移动端优先 UI，深色模式
 
 ## 已知限制
 
-- 用户数据在 localStorage：换设备/清缓存会丢进度（V1.1 注册 + 云同步解决）
-- 无离线缓存（Service Worker 留 V1.1）
+- 用户数据仅保存在当前设备：换设备、卸载或清除数据仍会丢进度；暂无云同步
+- Service Worker 提供基础离线壳，完整离线内容更新策略仍待完善
 - 无任务提醒（V1.1 邮件提醒）
 - 资源点信息可能过期，页面已加"以官网为准"提示
 - 仅温哥华/BC 省；多城市 V1.2
 
 ## 下一步（V1.1 规划）
 
-注册登录 + 云同步、邮件任务提醒、Service Worker 离线缓存、AI 问答、截图解释入口。详见 `docs/PRD-v2.md` §13。
+本地任务提醒、可选云同步、内容更新机制、AI 问答和截图解释入口。详见 `docs/PRD-v2.md` §13；实际优先级以用户反馈和留存数据为准。

@@ -11,7 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { IdentityType, Profile, TopConcern } from "@/types";
-import { loadProfile, setProfile } from "@/lib/store";
+import { useAppState } from "@/lib/store";
 
 const IDENTITIES: { id: IdentityType; label: string; desc: string; icon: LucideIcon }[] = [
   { id: "student", label: "留学生", desc: "持学签来读书", icon: GraduationCap },
@@ -34,6 +34,7 @@ type YesNo = boolean | null;
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const { profile: existingProfile, setProfile } = useAppState();
   const contentRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(0);
 
@@ -143,7 +144,6 @@ export default function OnboardingPage() {
   ];
 
   function finish() {
-    const existing = loadProfile();
     const newProfile: Profile = {
       identity: identity!,
       landingDate,
@@ -152,7 +152,7 @@ export default function OnboardingPage() {
       hasHousing: hasHousing!,
       hasCarPlan: hasCarPlan!,
       topConcerns,
-      createdAt: existing?.createdAt ?? new Date().toISOString(),
+      createdAt: existingProfile?.createdAt ?? new Date().toISOString(),
     };
     setProfile(newProfile);
     router.push("/dashboard");

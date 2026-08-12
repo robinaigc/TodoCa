@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     ".vercel/**",
     "out/**",
     "build/**",
+    "ios/App/App/public/**",
     "next-env.d.ts",
   ]),
 ]);

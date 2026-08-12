@@ -42,7 +42,7 @@ const FEATURES: { icon: LucideIcon; title: string; desc: string }[] = [
 ];
 
 export default function LandingPage() {
-  const { profile } = useAppState();
+  const { ready, profile } = useAppState();
   const hasProfile = !!profile;
 
   return (
@@ -77,12 +77,18 @@ export default function LandingPage() {
           每一步该做什么、准备什么、去哪办、英文怎么说，都帮你列好。
         </p>
 
-        <Link
-          href={hasProfile ? "/dashboard" : "/onboarding"}
-          className="btn-primary mt-8 w-full py-4 text-base"
-        >
-          {hasProfile ? "继续我的登陆清单 →" : "开始生成我的登陆清单"}
-        </Link>
+        {ready ? (
+          <Link
+            href={hasProfile ? "/dashboard" : "/onboarding"}
+            className="btn-primary mt-8 w-full py-4 text-base"
+          >
+            {hasProfile ? "继续我的登陆清单 →" : "开始生成我的登陆清单"}
+          </Link>
+        ) : (
+          <div className="mt-8 w-full rounded-2xl bg-surface-muted py-4 text-base font-semibold text-text-muted">
+            正在恢复本地清单…
+          </div>
+        )}
         <p className="mt-3 text-xs text-text-muted">
           无需注册 · 30 秒完成 · 适合留学生、工签人士、新 PR
         </p>
@@ -111,7 +117,7 @@ export default function LandingPage() {
           本产品提供一般生活信息和任务整理，不替代律师、医生、会计师、持牌移民顾问或其他专业人士的意见。
           涉及移民、法律、医疗、税务、保险等问题，请咨询合资格专业人士或官方机构。
           <br />
-          你的用户画像和任务进度保存在当前浏览器本地；协助表单仅在你主动提交时收集联系方式。
+          你的用户画像和任务进度保存在当前设备；协助或纠错表单仅在你主动提交时收集联系方式和反馈内容。
         </p>
       </footer>
     </main>
